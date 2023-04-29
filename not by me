@@ -637,7 +637,7 @@ spawn(function()
 	getgenv().death = false
 	local function a()
 		while true do
-			wait(337)
+			wait(340)
 			if (workspace.Ambience_Seek.Playing or workspace.Ambience_Figure.Playing or workspace.Ambience_FigureIntense.Playing or workspace.Ambience_FigureEnd.Playing or workspace.CurrentRooms:FindFirstChild("50")) then
 				a()
 				return
@@ -653,7 +653,7 @@ spawn(function()
 				BreakLights = true,
 				FlickerLights = {
 					true,
-					50,
+					40,
 				},
 				Cycles = {
 					Min = 1,
@@ -716,15 +716,24 @@ spawn(function()
 			end
 
 			entity.Debug.OnEntityDespawned = function(entity)
-    local Achievements = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
+				if getgenv().death == true then
+					getgenv().Title = "Last Chance To Look At me" --Title Here
+					getgenv().Description = "Why are you running?" --Description Here
+					getgenv().Reason = "Encounter Deergod" --Reason Here
+					getgenv().BadgeId = "10851571707",  --Replace Number with Your Badge ID
+					getgenv().Category = 10 --You can replace the Category or dont
 
--- Creates and displays your custom achievement
-Achievements.Get({
-    Title = "Last Chance To Look At me",
-    Desc = "Why are you running?.",
-    Reason = "Encounter Deergod.",
-    Image = "10851571707",
-})
+					local Unlock = require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Lobby.RemoteListener.Modules.AchievementUnlock)
+					local Achievements = debug.getupvalue(Unlock, 1)
+					for i,v in pairs(require(game:GetService("ReplicatedStorage").Achievements)) do
+						v.Title = getgenv().Title
+						v.Desc = getgenv().Description
+						v.Reason = getgenv().Reason
+						v.BadgeId = getgenv().BadgeId
+						v.Category = getgenv().Category
+					end
+					Unlock(nil,"Join")
+				end
 			end
 
 			entity.Debug.OnEntityStartMoving = function(entity)
